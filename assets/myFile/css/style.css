@@ -1,0 +1,459 @@
+html{
+    font-size: 1rem;
+}
+body{
+    padding: 0;
+    margin: 0;
+    /* font-size: 1rem; */
+}
+
+.my-push{
+    margin-top:25rem; 
+}
+
+.my-auto{
+    width: 100%;
+    max-width: 60%;
+    display: block;
+    margin: auto;
+}
+
+.banner{
+    padding: 1rem 0;
+    color:white;
+    background-image: url('../img/banner.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 50vh;
+}
+
+.banner-box-text{
+    background-color: rgba(0, 0,0, 0.7);
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    display: inline-block;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.thumbnail{
+    padding-top: 10rem;
+    position: relative;
+    font-size: 1rem;
+}
+
+.thumbnail span{
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10rem;
+}
+
+.form-search{
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    transform: translateX(-50%);
+    display: block;
+    width: 100%;
+    max-width: 60%;
+    background-color: white;
+    padding: 5rem 3rem;
+    box-shadow: 0 10px 6px -9px #999;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.3rem;
+}
+
+
+.form-search input[type='search']{
+    font-size: 1.5rem;
+    display: inline;
+    width: 80%;
+    padding: 0.8rem 0;
+    padding-left: 0.5rem;
+    margin-left: 8%;
+    border:none;
+    border-left: 1px solid gray;
+}
+.form-search input[type='submit']{
+    font-size: 1.5rem;
+    display: inline;
+    width: 12%;
+    padding: 0.8rem 0;
+    border:none;
+    background-color:rgb(218, 142, 3);
+    color: white;
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+}
+
+.search-group{
+    position: relative;
+    border:1px solid gray;
+    border-radius:0.4rem; 
+}
+
+.search-group span{
+    position: absolute;
+    top:5px;
+    left: 6px;
+    display: inline-block;
+    font-size :2.5rem;
+    text-align: center;
+}
+
+
+
+.date-box{
+    border:1px solid gray;
+    display: inline-block;
+    border-radius:0.4rem; 
+}
+
+.date-box span{
+    position: absolute;
+    font-size: 2.5rem;
+}
+
+.date-box span::before{
+    position: absolute;
+    top:5px;
+    left: 16px;
+    display: inline-block;
+    font-size :2.5rem;
+    text-align: center;
+}
+
+.date-box input[type='date']{
+    font-size: 1rem;
+    padding: 0.8rem 0;
+    margin: 0 1rem;
+    margin-left: 4.5rem;
+    border: none;
+    border-left:1px solid gray; 
+}
+
+.grup-date{
+    margin-top: 2rem;
+    position: relative;
+    display: block;
+    width: 100%;
+    text-align: center;  
+}
+
+.grup-date label{
+    position: absolute;
+}
+
+.grup-date .check-in{
+    top: -40%;
+}
+.grup-date .check-out{
+    top: -40%;
+    left: 50.5%;
+}
+
+
+.form-search .search-group{
+    width: 100%;
+}
+
+footer{
+    margin-top: 5rem;
+    display: block;
+    width: 100%;
+    color: white;
+    background-color: rgb(48, 44, 44);
+    padding: 2rem 0;
+}
+
+
+
+
+
+/* hotel lists style */
+
+.hotel-list-container{
+    position: relative;
+    display: block;
+    margin: 1rem auto;
+    width: 100%;
+    max-width: 80%;
+    border:1px solid rgb(209, 207, 207);
+    padding-bottom: 2.5rem;
+    border-radius: 0.3rem;
+}
+
+.hotel-list-content{
+    margin-left: 25rem;
+}
+
+.hotel-list-info p{
+    display: inline;
+}
+
+.img-hotel-list{
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100%;
+    max-height: 195px;
+    max-width: 35%;
+}
+
+.my-label-container{
+    position: absolute;
+    right: 2%;
+    bottom: 12%;
+}
+.my-label{
+    font-size: 1.5rem;
+}
+
+.btn-list-view-hotel{
+    margin: 1rem 0;
+}
+
+
+
+/* hotel details style */
+.hotel-dec-box{
+    display: block;
+    margin: 1rem auto;
+    width: 100%;
+    max-width: 80%;
+    padding: 2.3rem 3rem;
+    border: 1px solid rgb(204, 203, 203);
+}
+
+.img-hotel{
+    width: 100%;
+    max-width: 70%;
+}
+
+.my-label-hotel-price{
+    float: right;
+}
+
+.hotel-facility ul{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+.hotel-facility ul li{
+    list-style-type: circle;
+    display: inline-block;
+    padding: 0.3rem;
+}
+
+.room-dec-box{
+    display: block;
+    margin: 1rem auto;
+    width: 100%;
+    max-width: 80%;
+    padding: 1.2rem 1rem;
+    padding-bottom: 2.7rem;
+    border: 1px solid rgb(204, 203, 203);
+}
+
+.img-room{
+    width: 100%;
+    max-width: 25%;
+    height: 130px;
+    float: left;
+}
+
+.room-content{
+    margin-left: 15rem;
+    width: 30%;
+}
+.room-content h2{
+    margin-top: -5px;
+}
+
+.room-content ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.room-content ul li{
+    display: inline;
+}
+
+
+.room-booking{
+    float: right;
+    width: 45%;
+}
+
+.form-right-element{
+    margin-top: -25px;
+    float: right;
+}
+
+.select-room{
+    width: 160px;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 0.2rem;
+
+}
+
+.my-btn-book{
+    margin: 1rem 0;
+}
+
+.price-label{
+    display: block;
+    margin-bottom: 10px;    
+}
+
+.room-available{
+    display: block;
+    color: red;
+    margin-top: 10px;
+}
+
+
+/* table verify */
+
+.table-container{
+    display: block;
+    width: 100%;
+    max-width: 80%;
+    border: 1px solid rgb(182, 180, 180);
+    padding: 3rem;
+    margin: 3rem auto;
+    border-radius: 0.5rem;
+}
+
+.hotel-info{
+    width: 100%;
+    max-width: 50%;
+}
+
+.hotel-info table,
+.reservation-info table{
+    margin: 2rem 0;    
+}
+
+.img-type-verify img{
+    width: 100%;
+}
+
+.reservation-info table td{
+    width: 15%;
+}
+
+
+.hotel-info th{
+    width: 22%;
+    text-align: right;
+}
+
+.hotel-info td{
+    text-align: left;
+}
+
+.total-price table{
+    width: 100%;
+    max-width: 60%;
+}
+
+.night{
+    width: 100%;
+    width: 40%;
+}
+
+.total-price span{
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+}
+
+
+.event-info{
+    float: right;
+    width: 100%;
+    max-width: 40%;
+}
+
+.my-center{
+    display:block;
+    margin: auto;
+    text-align: center;
+}
+
+.my-verify-label{
+    text-align: center;
+    display: block;
+    width: 30%;
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.from-confirmation{
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background-color: rgb(227, 240, 240);
+    border-radius: 1rem;
+}
+
+.my-box{
+    width: 100%;
+    max-width: 50%;
+    display: block;
+    margin: 1rem auto;
+}
+
+.request th{
+    width: 25%;
+}
+
+.my-box .box-body table{
+    margin: 0 2rem;
+}
+
+.my-account tr th{
+    width: 20%;
+}
+
+.my-profile{
+    margin: 4rem auto;
+}
+
+.form-photo{
+    position: absolute;
+    top:58%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.form-photo form .file-upload input[type='file']{
+    display: none;
+}
+
+.form-photo form .file-upload{
+    background-color: rgba(233, 225, 225,0.6);
+    padding: 0.4rem 1.3rem;
+    border-bottom-left-radius: 6rem;
+    border-bottom-right-radius: 6rem;
+}
+
+.form-photo form .file-upload:hover{
+    background-color: rgba(233, 225, 225,0.8);
+}
+
+.my-login-bg{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
