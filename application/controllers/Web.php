@@ -103,11 +103,12 @@ class Web extends CI_Controller{
             $verifyToken = false;
             $dataApi['response'] = 404;
         }
-
+        
         if(!empty($url)){
             // send raw data to another web app
             $rawData = Bridge::post($url,$data);
-            if($rawData !== ""){
+
+            if($rawData === 200){
                 $dataApi = json_decode($rawData, true);
                 $verifyToken = $this->token->verifiedCSRF($dataApi['token_id'], $dataApi['token']);
             }else{
@@ -306,7 +307,7 @@ class Web extends CI_Controller{
             $verifyToken = true;
             // post data to management
             $result = Bridge::post($url,$dataToAPi);
-            if($result !== ""){
+            if($result === 200){
                 $result = json_decode($result);
                 $verifyToken = $this->token->verifiedCSRF($result->token_id, $result->token);
             }

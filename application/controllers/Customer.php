@@ -150,7 +150,6 @@ class Customer extends CI_Controller
      */
     public function cancelMyReserv()
     {
-
         $idAPI = $this->uri->segment(2);
         if($idAPI === 'NO'){
             $idData = $this->uri->segment(3);
@@ -225,7 +224,7 @@ class Customer extends CI_Controller
             $result = Bridge::post($url,$dataRequest);
             $verifyToken = "";
             // if no response
-            if($result !== ""){
+            if($result === 200){
                 $result = json_decode($result, true);
                 $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
             }
@@ -359,35 +358,6 @@ class Customer extends CI_Controller
             );
             
             $id_confirm = $this->Api_Model->insertData('tb_confirm',$data);
-            
-            /**
-             * confirmation post api
-             */
-            // $url = $this->Api_Model->getColumn('urlapi','tb_hotel','id_hotel',$idH);
-            // $url = $url['urlapi'];
-
-            // $key = base64_encode(bin2hex(openssl_random_pseudo_bytes(24).time()));
-            // $token = $this->token->generateCsrfToken($key);
-            // $dataAPI = array(
-            //     'request_data' => 'CREATE_CONFIRMATION',
-            //     'id_confirm'    => $id_confirm,
-            //     'token_id' => $token->getId(),
-            //     'token' => $token->getValue(),
-            //     'sender_name'       => $this->input->post('sender_name'),
-            //     'bank_sender'       => $this->input->post('bank_sender'),
-            //     'no_rek_sender'     => $this->input->post('no_rek_sender'),
-            //     'id_reservasi'      => $id_reservasi,
-            // );
-            // var_dump(json_encode($dataAPI));
-            
-            // $result = Bridge::post($url,$dataAPI);
-            // $result = json_decode($result, true);
-            // $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
-            // if($verifyToken === false){
-            //     echo json_encode(['msg' => 'token data not match']);
-            //     exit;
-            // }
-            
 
             $dataU = array(
                 'id_status_reservasi' => 2

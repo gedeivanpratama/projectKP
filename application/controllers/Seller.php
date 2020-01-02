@@ -624,15 +624,15 @@ class Seller extends CI_Controller
 
         $name = $this->Standard_model->getSingle('tb_denah','id_denah',$idD);
         
-        define('EXT', '.'.pathinfo(__FILE__, PATHINFO_EXTENSION));
-        define('PUBPATH',str_replace(SELF,'',FCPATH)); // added
+        // define('EXT', '.'.pathinfo(__FILE__, PATHINFO_EXTENSION));
+        // define('PUBPATH',str_replace(SELF,'',FCPATH)); // added
 
-        //get path
-        $url = PUBPATH . 'uploads/denah/'. $name['denah'];
+        // //get path
+        // $url = PUBPATH . 'uploads/denah/'. $name['denah'];
 
-        if(file_exists($url)){
-            unlink($url);
-        }
+        // if(file_exists($url)){
+        //     unlink($url);
+        // }
 
         $result = $this->Standard_model->deleteData('tb_denah','id_denah',$idD);
         if($result){
@@ -1221,23 +1221,6 @@ class Seller extends CI_Controller
         $url = $this->Api_Model->getColumn('urlapi','tb_hotel','id_hotel',$idH['id_hotel']);
         $url = $url['urlapi'];
 
-        // $key = base64_encode(bin2hex(openssl_random_pseudo_bytes(24).time()));
-        // $token = $this->token->generateCsrfToken($key);
-        // $dataApi = [
-        //     'request_data'    => 'APROVE_PAYMENT',
-        //     'token_id' => $token->getId(),
-        //     'token' => $token->getValue(),
-        //     'id_reservasi' => $id
-        // ];
-
-        // $result = Bridge::post($url, $dataApi);
-        // $result = json_decode($result, true);
-        // $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
-        // if($verifyToken === false){
-        //     echo json_encode(['msg' => 'token data are not match']);
-        //     exit;
-        // }
-
         $result = $this->Standard_model->updateData('tb_reservasi',$data,'id_reservasi',$id);
         if($result){
             $this->session->set_flashdata('title','Payment Aproved');
@@ -1300,7 +1283,7 @@ class Seller extends CI_Controller
             ];
             
             $result = Bridge::post($url, $dataAPI);
-            if($result !== ""){
+            if($result === 200){
                 $result = json_decode($result, true);
                 $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
                 if($verifyToken === false){
