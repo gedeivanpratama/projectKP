@@ -10,7 +10,6 @@
               <h3 class="box-title">My Hotel List :</h3>
             </div>
             <div class="msg-flash" data-flashTitle="<?= $this->session->flashdata('title');?>" data-flashInfo="<?= $this->session->flashdata('info');?>" data-status="<?= $this->session->flashdata('status');?>"></div>        
-			</div>
             <div class="box-body no-padding">
               <table class="table table-condensed">
                     <tbody>

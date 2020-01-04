@@ -28,4 +28,12 @@ class Web_model extends CI_Model{
         $result = $this->db->get();
         return $result->row_array();
     }
+
+    public function getRoom()
+    {
+        $sql = "SELECT id_reservasi,check_out, tb_kamar.id_kamar, no_kamar, tb_kamar.id_type FROM tb_reservasi
+        RIGHT JOIN tb_kamar ON tb_reservasi.id_kamar = tb_kamar.id_kamar";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }

@@ -8,13 +8,10 @@ class Cront_Model  extends CI_Model
         $this->load->database();
     }
 
-    public function getReservationStatus($date)
+    public function getReservationStatus()
     {
-        $sql = 'SELECT TK.id_kamar, TK.no_kamar, TK.id_type, TR.id_reservasi, TR.check_in, TR.check_out, TR.total_price, TR.id_customer, TR.id_hotel, TR.id_status_reservasi, TR.id_type, TR.id_kamar, TR.id_event
-        FROM tb_kamar as TK
-        LEFT JOIN tb_reservasi as TR ON TK.id_kamar = TR.id_kamar
-        WHERE TR.check_out < ? ';
-        $query = $this->db->query($sql,[$date]);
+        $sql = "SELECT id_reservasi, id_status_reservasi, id_kamar, book_at FROM tb_reservasi WHERE book_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 HOUR) AND DATE_ADD(NOW(), INTERVAL 1 HOUR) AND id_status_reservasi = 1";
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 
@@ -25,10 +22,4 @@ class Cront_Model  extends CI_Model
         return $query->result_array();
     }
 
-    public function getBooking()
-    {
-        $sql = 'SELECT book_at FROM `tb_reservasi` where id_status_reservasi =1 or 2';
-        $query = $this->db->query($sql);
-        return $query->result_array();
-    }
 }

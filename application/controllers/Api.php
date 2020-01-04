@@ -44,12 +44,6 @@ class Api extends CI_Controller
     public function getData()
     {
         $url = $this->uri->segment(3);
-        $data = array(
-            id_request => "",
-            id_partner => "",
-            kamar => "",
-            tanggal => "2019-04-02",
-        );
         if(empty($url) || !isset($url)){
             $data = $this->Api_Model->getData();
             echo json_encode($data);

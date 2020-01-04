@@ -9,7 +9,7 @@ class Customer extends CI_Controller
         $this->load->library(array('form_validation','session','Pdf','Bridge','Token'));
         $this->load->model(array('Standard_model','Customer_model','Cront_Model','Api_Model'));
         $this->checkSesion();
-        $this->checkStatusReservation();
+        // $this->checkStatusReservation();
     }
 
     public function checkSesion()
@@ -150,176 +150,22 @@ class Customer extends CI_Controller
      */
     public function cancelMyReserv()
     {
-        $idAPI = $this->uri->segment(2);
-        if($idAPI === 'NO'){
-            $idData = $this->uri->segment(3);
-            $reservation = $this->Standard_model->getSingle('tb_reservasi','id_reservasi',$idData);
-            
-        }else{
-            $reservation = $this->Standard_model->getSingle('tb_reservasi','data_api',$idAPI);
-        }
-        
-        /**
-         * request api to cancel the reservation
-         * 
-         */
-        $url = $this->Api_Model->getColumn('urlapi','tb_hotel','id_hotel',$reservation['id_hotel']);
-        $url = $url['urlapi'];
+        $id = $this->uri->segment(3);
+        $reservation = $this->Standard_model->getSingle('tb_reservasi','data_api',$id);
+        $dataK = [
+            'id_status' => 1
+        ];
 
-        if(empty($url)){
-            $data = [
-                'id_reservasi' => $reservation['id_reservasi'],
-                'check_in' => $reservation['check_in'],
-                'check_out' => $reservation['check_out'],
-                'total_price' => $reservation['total_price'],
-                'id_customer' => $reservation['id_customer'],
-                'id_hotel' => $reservation['id_hotel'],
-                'id_status_reservasi' => 4,
-                'id_type' => $reservation['id_type'],
-                'id_kamar' => $reservation['id_kamar'],
-                'id_event' => $reservation['id_event'],
-            ];
-            
-            $dataK = [
-                'id_status' => 1
-            ];
-
-            $result = $this->Standard_model->insertData('tb_archive',$data);
-            $result = $this->Standard_model->deleteData('tb_reservasi','id_reservasi',$id);
-            $update = $this->Standard_model->updateData2('tb_kamar',$dataK,'id_kamar',$reservation['id_kamar']);
-    
-            if($result === true && $update === true){
-                $this->session->set_flashdata('title','Cancel Reservation');
-                $this->session->set_flashdata('info','Canceled');
-                redirect('myReservation');
-                
-            }
-
-        }
-        
-        if(!empty($url)){
-            $key = base64_encode(bin2hex(openssl_random_pseudo_bytes(24).time()));
-            $tokenKey = $this->token->generateCsrfToken($key);
-            $dataRequest = [
-                'request_data' => 'CANCEL_RESERVATION',
-                'token_id' => $tokenKey->getId(),
-                'token' => $tokenKey->getValue(),
-                'check_in' => $reservation['check_in'],
-                'check_out' => $reservation['check_out'],
-                'total_price' => $reservation['total_price'],
-                'id_customer' => $reservation['id_customer'],
-                'id_hotel' => $reservation['id_hotel'],
-                'id_status_reservasi' => 4,
-                'id_type' => $reservation['id_type'],
-                'id_kamar' => $reservation['id_kamar'],
-                'id_event' => $reservation['id_event'],
-                'data_api' => $reservation['data_api']
-            ];
-            
-            $dataK = [
-                'id_status' => 1
-            ];
-            
-            // post cancel request to another web app
-            $result = Bridge::post($url,$dataRequest);
-            $verifyToken = "";
-            // if no response
-            if($result === 200){
-                $result = json_decode($result, true);
-                $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
-            }
-            
-            if($verifyToken === false){
-                echo json_encode(['msg' => 'token data not match']);
-                exit;
-            }
-
-            $data = [
-                'id_reservasi' => $reservation['id_reservasi'],
-                'check_in' => $reservation['check_in'],
-                'check_out' => $reservation['check_out'],
-                'total_price' => $reservation['total_price'],
-                'id_customer' => $reservation['id_customer'],
-                'id_hotel' => $reservation['id_hotel'],
-                'id_status_reservasi' => 4,
-                'id_type' => $reservation['id_type'],
-                'id_kamar' => $reservation['id_kamar'],
-                'id_event' => $reservation['id_event'],
-            ];
-            
-            $result = $this->Standard_model->insertData('tb_archive',$data);
-            $result = $this->Standard_model->deleteData('tb_reservasi','data_api',$idAPI);
-            $update = $this->Standard_model->updateData2('tb_kamar',$dataK,'id_kamar',$reservation['id_kamar']);
-    
-            if($result === true && $update === true){
-                $this->session->set_flashdata('title','Cancel Reservation');
-                $this->session->set_flashdata('info','Canceled');
-                redirect('myReservation');
-                
-            }
-        }
-        
-    }
-
-    /**
-     * method di bawah tidak digunakan
-     */
-    public function deleteMyReserv($id)
-    {
-        /**
-         * post request untuk menghapis data reservasi
-         */
-        $reservation = $this->Standard_model->getSingle('tb_reservasi','id_reservasi',$id);
-
-        $url = $this->Api_Model->getcolumn('urlapi','tb_hotel','id_hotel',$reservation['id_hotel']);
-        $url = $url['urlapi'];
-        
-        $key = base64_encode(bin2hex(openssl_random_pseudo_bytes(24).time()));
-        $token = $this->token->generateCsrfToken($key);
-        $dataAPI = array(
-            'request_data' => 'DELETE_RESERVATION',
-            'id_reservasi' => $id,
-            'token_id' => $token->getId(),
-            'token' => $token->getValue(),
-            'check_in' => $reservation['check_in'],
-            'check_out' => $reservation['check_out'],
-            'total_price' => $reservation['total_price'],
-            'id_customer' => $reservation['id_customer'],
-            'id_hotel' => $reservation['id_hotel'],
-            'id_status_reservasi' => 4,
-            'id_type' => $reservation['id_type'],
-            'id_kamar' => $reservation['id_kamar'],
-            'id_event' => $reservation['id_event'],
-        );
-
-        $result = Bridge::post($url,$dataAPI);
-        $result = json_decode($result);
-        $verifyToken = $this->token->verifiedCSRF($result['token_id'], $result['token']);
-        if($verifyToken === false){
-            json_decode(['msg' => 'token data not match']);
-            die();
-        }
-        $data = array(
-            'id_reservasi'      => $id,
-            'check_in' => $reservation['check_in'],
-            'check_out' => $reservation['check_out'],
-            'total_price' => $reservation['total_price'],
-            'id_customer' => $reservation['id_customer'],
-            'id_hotel' => $reservation['id_hotel'],
-            'id_status_reservasi' => 5,
-            'id_type' => $reservation['id_type'],
-            'id_kamar' => $reservation['id_kamar'],
-            'id_event' => $reservation['id_event'],
-        );
-        
-        $insert = $this->Api_Model->insertData('tb_archive',$data);
+        $update = $this->Standard_model->updateData2('tb_kamar',$dataK,'id_kamar',$reservation['id_kamar']);
         $result = $this->Standard_model->deleteData('tb_reservasi','id_reservasi',$id);
 
-        if($result){
-            $this->session->set_flashdata('title','Delete Reservation');
-            $this->session->set_flashdata('info','Deleted');
+        if($result === true && $update === true){
+            $this->session->set_flashdata('title','Cancel Reservation');
+            $this->session->set_flashdata('info','Canceled');
             redirect('myReservation');
+            
         }
+        
     }
 
     public function myConfirmation($id_reservasi)

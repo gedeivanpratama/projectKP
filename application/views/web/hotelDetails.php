@@ -71,51 +71,31 @@
                     </ul>
                 </div>
             </div>
+            <br>
             <div class="col-3">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#denah<?=$val['id_denah']?>"><i class="fas fa-info-circle"></i></button> <span class="text-info">info posisi kamar</span>
-                <?php   $R = "";
-                        $id_kamar = "";
-                        $count = 0;
-                        if(isset($roomAPI)){
-                            foreach($roomAPI as $key => $valR){
-                                if($val['id_type'] === $valR['id_type']){
-                                    $R .= "<option value=" . $valR['id_room'] . ">Room Number : " .$valR['room_name']."</option>";
-                                    $id_kamar = $valR['id_room'];
-                                    $count++;
-                                }
-                            }  
-                        }else{
-                            foreach($room as $key => $valR){
-                                if($val['id_type'] === $valR['id_type']){
-                                    $R .= "<option value=" . $valR['id_kamar'] . ">Room Number : " .$valR['no_kamar']."</option>";
-                                    $id_kamar = $valR['id_kamar'];
-                                    $count++;
-                                }
-                            }  
-                        }
-                        ?>
-                <!-- // echo form_open(base_url("verify/". $hotel['id_hotel'] ."/". $val['id_type'].'/'. $_GET['name']));  -->
                     <form action="<?= base_url("verify/". $hotel['id_hotel'] ."/". $val['id_type'].'/')?>" method="get">
                     <label>Choose Room</label><br>                   
-                        <?php if(empty($R)): ?>
+                        <?php if(empty($room)): ?>
                             <select class="form-control" disabled>
                                 <option value="">Not Available</option>
                             </select>
                         <?php else: ?>
                             <select name="room" class="form-control">
-                            <?= $R; ?>
+                                <?php foreach ($room as $key => $value) : ?>
+                                    <?php if($value['check_out'] === null OR strtotime($value['check_out']) <= strtotime($_SESSION['check_in'])): ?>
+                                        <?php if($value['id_type'] === $val['id_type']):?>
+                                            <option value="<?= $value['id_kamar'] ?>"><?= $value['no_kamar'] ?></option>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </select>
                         <?php endif; ?>
                             
                     <div class="form-right-element">
                         <label class="price-label">Price per-Day :</label>
                         <h3 class="label label-success my-label">Rp. <b><?= number_format($val['harga']); ?></b></h3><br>
-                        <?php if($count !== 0): ?>
-                            <label class="text-success"><?= $count ?> (room) available</label>
                             <button class="btn btn-warning" type='submit'>Book</button>
-                        <?php else: ?>
-                            <label class="text-danger">not available</label>
-                        <?php endif; ?>                        
                     </div>
                     </form>
             </div>

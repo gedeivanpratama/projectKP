@@ -18,7 +18,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?= $reservation ?><sup style="font-size: 20px"> Reservation</sup></h3>
+              <h3><sup style="font-size: 20px"> Reservation</sup></h3>
               <p>Reservation status</p>
             </div>
             <div class="icon">
