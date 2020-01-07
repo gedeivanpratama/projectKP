@@ -1,8 +1,3 @@
-<?php
-  if(empty($this->session->userdata('id_seller')) || empty($this->session->userdata('nama_seller'))){
-    redirect('web');
-  }
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,17 +41,17 @@
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="<?= base_url(); ?>uploads/seller/<?= $seller['img_seller'] ?>" class="user-image" alt="User Image">
+              <img src="<?= base_url(); ?>uploads/seller/<?= $profile['image'] ?>" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs"><?= $seller['nama_seller'] ?></span>
+              <span class="hidden-xs"><?= $profile['name'] ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="<?= base_url(); ?>uploads/seller/<?= $seller['img_seller'] ?>" class="img-circle" alt="User Image">
+                <img src="<?= base_url(); ?>uploads/seller/<?= $profile['image'] ?>" class="img-circle" alt="User Image">
                 <p>
-                  <?= $seller['telp_seller'] ?> - <?= $seller['email_seller']; ?>
-                  <small><?= $seller['alamat_seller'];?></small>
+                  <?= $profile['telp'] ?> - <?= $profile['name']; ?>
+                  <small><?= $profile['address'];?></small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -81,34 +76,50 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?= base_url(); ?>uploads/seller/<?= $seller['img_seller'] ?>" class="img-circle" alt="User Image">
+          <img src="<?= base_url(); ?>uploads/seller/<?= $profile['image'] ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?= $seller['nama_seller']; ?></p>
-          <span><?= $seller['alamat_seller'];?></span>
+          <p><?= $profile['name']; ?></p>
+          <span><?= $profile['address'];?></span>
         </div>
       </div>
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu" data-widget="tree">
+
+      <?php if($this->session->userdata('id_rolle') === '1'): ?>
+        <!-- Sidebar Menu -->
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">HEADER</li>
+          <!-- Optionally, you can add icons to the links -->
+          <li class="active"><a href="<?= base_url()?>Web"><i class="fa fa-paper-plane"></i> <span>Visit Web</span></a></li>
+          <li class=" treeview">
+            <a href="#">
+              <i class="fa fa-edit"></i> <span>Hotel Setting</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu" style="display: none;">
+              <li><a href="<?= base_url(); ?>hotelLists"><i class="fa fa-circle-o"></i> Data Hotel Lists</a></li>
+              <li><a href="<?= base_url() ?>manageHotelFacility"><i class="fa fa-circle-o"></i> Hotel Facility Lists</a></li>
+            </ul>
+          </li>
+          <li><a href="<?= base_url(); ?>reservation"><i class="fa fa-phone"></i> <span>Reservation</span></a></li>
+          <li><a href="<?= base_url(); ?>manageAccount"><i class="fa fa-gear"></i><span>Manage Account</span></a></li>
+        </ul>
+        <!-- /.sidebar-menu -->
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+      <?php else: ?>
+        <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="<?= base_url()?>Web"><i class="fa fa-paper-plane"></i> <span>Visit Web</span></a></li>
-        <li class=" treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Hotel Setting</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu" style="display: none;">
-            <li><a href="<?= base_url(); ?>hotelLists"><i class="fa fa-circle-o"></i> Data Hotel Lists</a></li>
-            <li><a href="<?= base_url() ?>manageHotelFacility"><i class="fa fa-circle-o"></i> Hotel Facility Lists</a></li>
-          </ul>
-        </li>
-        <li><a href="<?= base_url(); ?>reservation"><i class="fa fa-phone"></i> <span>Reservation</span></a></li>
+        <li><a href="<?= base_url(); ?>myReservation"><i class="fa fa-phone"></i> <span>My Reservation</span></a></li>
+        <li><a href="<?= base_url(); ?>myBookingCancel"><i class="fa fa-minus-circle"></i> <span>BooKing Cancel</span></a></li>
         <li><a href="<?= base_url(); ?>manageAccount"><i class="fa fa-gear"></i><span>Manage Account</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
   </aside>
+    <?php endif; ?>

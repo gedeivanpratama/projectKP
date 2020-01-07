@@ -1,4 +1,8 @@
-<div class="msg-flash" data-flashTitle="<?= $this->session->flashdata('title');?>" data-flashInfo="<?= $this->session->flashdata('info');?>" data-status="<?= $this->session->flashdata('status');?>"></div>        
+<div class="msg-flash" data-flashTitle="
+
+use Sabberworm\CSS\Value\Value;
+
+<?= $this->session->flashdata('title');?>" data-flashInfo="<?= $this->session->flashdata('info');?>" data-status="<?= $this->session->flashdata('status');?>"></div>        
 <div class="content-wrapper">
 	<section class="content container-fluid">
 		<div class="box my-top">
@@ -27,14 +31,18 @@
                             <td><?= $value['nama_hotel'] ?></td>
                             <td><?= $value['nama_type'] ?></td>
                             <td><?= $value['no_kamar'] ?></td>
-							<td><?= $value['nama_customer'] ?></td>
+							<td><?= $value['name'] ?></td>
                             <td><?= $value['nama_status'] ?></td>
 							<th>
                                 <a class="btn btn-primary" href="<?= base_url() ?>check/reservation/details/<?= $value['id_reservasi'] ?>">Detail</a>
                                 <a class="btn btn-danger" href="<?= base_url() ?>check/reservation/delete/<?= $value['id_reservasi'] ?>/<?= $value['id_kamar'] ?>">Delete</a>
                                 <?php if($value['id_status_reservasi'] === '2'): ?>
-                                <a class="btn btn-success" href="<?= base_url() ?>check/reservation/aprove/<?= $value['id_reservasi'] ?>">Aprove</a>
-                                <?php endif; ?>
+									<a class="btn btn-success" href="<?= base_url() ?>check/reservation/aprove/<?= $value['id_reservasi'] ?>">Aprove</a>
+									<?php endif; ?>
+									
+									<?php if($value['id_status_reservasi'] === '3'): ?>
+										<a class="btn btn-success" href="<?= base_url() ?>getPDF/<?= $value['id_reservasi'] ?>/<?= $value['id_hotel'] ?>">PDF</a>
+									<?php endif; ?>
                             </th>
 
 						</tr>

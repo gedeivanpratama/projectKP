@@ -30,6 +30,12 @@ class Standard_model extends CI_Model{
         return $result->row_array();
     }
 
+    public function one($table, $data){
+        $sql = "SELECT * FROM ".$table." WHERE id = ?";
+        $query = $this->db->query($sql, $data);
+        return $query->row();
+    }
+
     public function getAllType($id)
     {
         $sql = "SELECT tbT.id_type, tbT.nama_type, tbT.image_kamar, tbD.denah, tbT.harga, tbT.id_hotel, tbD.id_denah, tbD.description FROM tb_type AS tbT LEFT JOIN tb_denah AS tbD ON tbT.id_type = tbD.id_type WHERE tbT.id_hotel = ?";

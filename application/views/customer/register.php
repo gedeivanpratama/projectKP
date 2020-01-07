@@ -3,7 +3,6 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?= base_url(); ?>assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -31,30 +30,15 @@
     <p class="login-box-msg">Register Customer</p>
     <?php echo form_open(); ?>
         <div class="form-group">
-            <label for="exampleInputEmail1">Name</label>
-            <span class="text-danger"><?php echo form_error('nama_customer'); ?></span>
-            <input type="text" class="form-control" name="nama_customer" placeholder="Name">
-        </div>
-        <div class="form-group">
             <label for="exampleInputEmail1">Email</label>
-            <span class="text-danger"><?php echo form_error('email_customer'); ?></span>
-            <input type="email" class="form-control" name="email_customer" placeholder="Email">
+            <span class="text-danger"><?php echo form_error('email'); ?></span>
+            <input type="email" class="form-control" name="email" placeholder="Email">
         </div>
         <div class="form-group">
-            <label for="exampleInputEmail1">telp</label>
-            <span class="text-danger"><?php echo form_error('telp_customer'); ?></span>
-            <input type="number" class="form-control" name="telp_customer" placeholder="Telp">
+            <label for="exampleInputPassword1">Password</label>
+            <span class="text-danger"><?php echo form_error('password'); ?></span>
+            <input type="password" class="form-control" name="password" placeholder="Password">
         </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Alamat</label>
-                <span class="text-danger"><?php echo form_error('alamat_customer'); ?></span>
-                <input type="text" class="form-control" name="alamat_customer" placeholder="Alamat">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <span class="text-danger"><?php echo form_error('customer_password'); ?></span>
-                <input type="password" class="form-control" name="customer_password" placeholder="Password">
-            </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">

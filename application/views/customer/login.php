@@ -30,13 +30,13 @@
     <h3 class="text-center">Login As Customer</h3>
     <?php echo form_open(); ?>
       <div class="form-group has-feedback">
-        <span class="text-danger"><?php echo form_error('email_customer'); ?></span>
-        <input type="text" class="form-control" placeholder="Email" name="email_customer">
+        <span class="text-danger"><?php echo form_error('email'); ?></span>
+        <input type="text" class="form-control" placeholder="Email" name="email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <span class="text-danger"><?php echo form_error('customer_password'); ?></span>
-        <input type="password" class="form-control" placeholder="Password" name="customer_password">
+        <span class="text-danger"><?php echo form_error('password'); ?></span>
+        <input type="password" class="form-control" placeholder="Password" name="password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">

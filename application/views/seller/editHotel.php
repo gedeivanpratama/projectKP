@@ -16,10 +16,6 @@
             <span style="color:red;"><?= form_error('alamat_hotel'); ?></span>
             <input type="text" class="form-control" name="alamat_hotel" value="<?= $hotel['alamat_hotel']?>" placeholder="Alamat Hotel">
         </div>
-        <div class="form-group">
-            <label for="inputAddress">Url</label>
-            <input type="text" class="form-control" name="url" value="<?= $hotel['urlapi'] ?>">
-        </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Email</label>

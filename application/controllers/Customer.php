@@ -6,10 +6,9 @@ class Customer extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(array('url','form'));
-        $this->load->library(array('form_validation','session','Pdf','Bridge','Token'));
+        $this->load->library(array('form_validation','session','Pdf'));
         $this->load->model(array('Standard_model','Customer_model','Cront_Model','Api_Model'));
         $this->checkSesion();
-        // $this->checkStatusReservation();
     }
 
     public function checkSesion()
@@ -19,43 +18,45 @@ class Customer extends CI_Controller
         }
     }
 
-    public function checkStatusReservation()
+    public function userid()
     {
-        $today = date("Y-m-d");
-        $reservasi = $this->Cront_Model->getReservationStatus($today);
-        
-        for ($i=0; $i < count($reservasi); $i++) { 
-            
-            $data = [
-                'id_reservasi' => $reservasi[$i]['id_reservasi'],
-                'check_in' => $reservasi[$i]['check_in'],
-                'check_out' => $reservasi[$i]['check_out'],
-                'total_price' => $reservasi[$i]['total_price'],
-                'id_customer' => $reservasi[$i]['id_customer'],
-                'id_hotel' => $reservasi[$i]['id_hotel'],
-                'id_status_reservasi' => $reservasi[$i]['id_status_reservasi'],
-                'id_type' => $reservasi[$i]['id_type'],
-                'id_kamar' => $reservasi[$i]['id_kamar'],
-                'id_event' => $reservasi[$i]['id_event'],
+        if($this->session->get_userdata('id_customer') !== null){
+            return $this->session->userdata('id_customer');
+        }
+
+        return $this->session->userdata('id_seller');
+    }
+
+    public function dataUser()
+    {
+        $id = $this->session->get_userdata('id_customer');
+        $data['profile'] = $this->Standard_model->getSingle('tb_profile','id_user', $id['id_customer']);
+        if(is_null($data['profile'])){
+            $profile = $this->Standard_model->one('tb_user',$id['id_customer']);
+            $username = explode('@',$profile->email);
+            $username = $username[0];
+
+            $data['profile'] = [
+                'id'        => 'no',
+                'name'      => $username,
+                'image'     => 'no_img.jpg',
+                'address'   => '',
+                'telp'      => '',
+                'email'     => $profile->email
             ];
 
-            $insert = $this->Api_Model->insertData('tb_archive',$data);
-            if($insert){
-                $this->Api_Model->deleteData('tb_reservasi','id_reservasi',$reservasi[$i]['id_reservasi']);
-            }
-
         }
+        return $data['profile'];
     }
 
     public function dasboardCustomer()
     {
-        //check session
-        //$this->checkSesion();
 
         //get data customer
         $id_customer = $this->session->userdata('id_customer');
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
-
+        // $data['customer'] = $this->Standard_model->getSingle('tb_user','id',$id_customer);
+        $data['profile']  = $this->dataUser();
+        
         //get data customer reservation
         $data['reservation'] = $this->Customer_model->getCustomerReservation($id_customer);
 
@@ -69,7 +70,7 @@ class Customer extends CI_Controller
     {
         //get data customer
         $id_customer = $this->session->userdata('id_customer');
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
+        $data['profile'] = $this->dataUser();
 
         //get data customer reservation
         $data['reservation'] = $this->Customer_model->getCustomerReservation($id_customer);
@@ -95,8 +96,9 @@ class Customer extends CI_Controller
         //get id room
         $id_room = $this->uri->segment(5);
 
+        
         //$data customer
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
+        $data['profile'] = $this->dataUser();
 
         //data hotel
         $data['hotel'] = $this->Standard_model->getSingle('tb_hotel','id_hotel',$id_hotel);
@@ -134,7 +136,7 @@ class Customer extends CI_Controller
         $id_customer = $this->session->userdata('id_customer');
 
         //$data customer
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
+        $data['profile'] = $this->dataUser();
 
         //get data customer reservation
         $data['reservation'] = $this->Customer_model->getCustomerCancel($id_customer);
@@ -144,22 +146,15 @@ class Customer extends CI_Controller
         $this->load->view('customer/templates/footer');
     }
 
-
     /**
      * cancel reservation 
      */
     public function cancelMyReserv()
     {
-        $id = $this->uri->segment(3);
-        $reservation = $this->Standard_model->getSingle('tb_reservasi','data_api',$id);
-        $dataK = [
-            'id_status' => 1
-        ];
-
-        $update = $this->Standard_model->updateData2('tb_kamar',$dataK,'id_kamar',$reservation['id_kamar']);
+        $id = $this->uri->segment(2);
         $result = $this->Standard_model->deleteData('tb_reservasi','id_reservasi',$id);
 
-        if($result === true && $update === true){
+        if($result){
             $this->session->set_flashdata('title','Cancel Reservation');
             $this->session->set_flashdata('info','Canceled');
             redirect('myReservation');
@@ -174,7 +169,7 @@ class Customer extends CI_Controller
         $id_customer = $this->session->userdata('id_customer');
 
         //$data customer
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
+        $data['profile'] = $this->dataUser();
 
         //get id Hotel
         $idH = $this->uri->segment(3);
@@ -221,131 +216,209 @@ class Customer extends CI_Controller
 
     public function getPDF()
     {
-        //get id reservasi
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => sys_get_temp_dir().DIRECTORY_SEPARATOR.'mpdf',
+                                'margin_left' => 10,
+                                'margin_right' => 10,
+                                'margin_top' => 5,
+                                'margin_bottom' => 0,
+                                'margin_header' => 0,
+                                'margin_footer' => 0,
+                                'format' => 'A5-P',
+                                ]);
+        $data = "ivan";
+        // get id reservasi
         $idR = $this->uri->segment(2);
 
         //get id hotel
         $idH = $this->uri->segment(3);
 
         //get data reservation
-        $data['reservation'] = $this->Customer_model->getDataPDF($idR);
-        $check_in = $data['reservation']['check_in'];
-        $check_out = $data['reservation']['check_out'];
+        $reservation = $this->Customer_model->getDataPDF($idR);
+        $confirm = $this->Customer_model->getdataConfirm($idR);
+
+        $check_in = $reservation['check_in'];
+        $check_out = $reservation['check_out'];
         $out = strtotime($check_out);
         $in = strtotime($check_in);
         $totalDay = ($out - $in) / (24*60*60);
-        $data['totalDay'] = $totalDay;
-
-        //get data confirm
-        $data['confirm'] = $this->Customer_model->getdataConfirm($idR);
-
-        //get data event
-        if($data['reservation']['id_event'] !== "0"){
-            $data['event'] = $this->Standard_model->getSingle('tb_event','id_event',$data['reservation']['id_event']);
-        }else{
-            $data['event'] = [
-                "discount" => 0
-            ];
-        }
         
-        $this->pdf->setPaper('A4', 'potrait');
-        $this->pdf->filename = 'booking.pdf';
-        $this->pdf->load_view('customer/PDF', $data);
+        $html = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <style>
+                header{
+                    margin :0;
+                    text-align:center;
+                }
 
-    }
+                header p{
+                    margin:0;
+                }
 
-    public function manageAccountCus()
-    {
-        //get id customer
-        $id_customer = $this->session->userdata('id_customer');
+                .box-customer,
+                .box-information{
+                    width:40%;
+                }
 
-        //data profile
+                .box-customer{
+                    float:left;
+                }
+
+                .box-information{
+                    float:right;
+                }
+
+                .box-booking{
+                    clear:both;
+                }
+
+                table {
+                    border-collapse: collapse;
+                }
+                
+                table, th, td {
+                    border: 1px solid black;
+                }
+
+                td{
+                    padding:2px;
+                }
+
+                .box-customer-pay{
+                    width:40%;
+                    float:left;
+                }
+                .box-confirm{
+                    width:40%;
+                    float:right;
+                }
+
+            </style>
+        </head>
+        <body>
+            <header>
+                <div><span>Telp :081928192891</span> | <span>Email:manajementHotel@gmail.com</span></div>
+                <p class="header-title">Booking Information</p>
+                <p class="header-title">Reservasi Hotel</p>
+            </header>
+            <hr>
+                <div class="box-customer">
+                    <p>Customer Information</p>
+                    <table>
+                        <tr>
+                            <td>Name </td>
+                            <td> '. $reservation['nama_customer']. '</td>
+                        </tr>
+                        <tr>
+                            <td>Alamat </td>
+                            <td> '.$reservation['alamat_customer'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Email </td>
+                            <td> '.$reservation['email_customer'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Telp </td>
+                            <td> '.$reservation["telp_customer"].'</td>
+                        </tr>
+                    </table>
+                </div>
         
-        //$data customer
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
-        $this->load->view('customer/templates/header',$data);
-        $this->load->view('customer/myAccount',$data);
-        $this->load->view('customer/templates/footer');
-    }   
+                <div class="box-information">
+                    <p>Room Information</p>
+                    <table class="table">
+                        <tr>
+                            <td>Name </td>
+                            <td> '.$reservation['nama_type'].'</td>
+                        </tr>
+                        <tr>
+                            <td>No </td>
+                            <td> '.$reservation['no_kamar'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Price /Night </td>
+                            <td> '.$reservation['harga'] .'</td>
+                        </tr>
+                    </table>
+                </div>
+        
+                <div class="box-booking">
+                    <p>Booking Information</p>
+                    <table class="table">
+                        <tr>
+                            <td>Name </td>
+                            <td>Check In</td>
+                            <td>Check Out</td>
+                            <td>Total Night</td>
+                            <td>Total Price</td>
+                        </tr>
+                        <tr>
+                            <td>'.$reservation['nama_customer'].'</td>
+                            <td>'.$reservation['check_in'].'</td>
+                            <td>'.$reservation['check_out'].'</td>
+                            <td>'.$totalDay.'</td>
+                            <td>Rp. '.$reservation['total_price'].'</td>
+                        </tr>
+                       
+                    </table>
+                </div>
+                <br>
+                <div class="box-customer-pay">
+                    <p>Payment Information</p>
+                    <table class="customer-pay-info">
+                        <tr>
+                            <td>Name </td>
+                            <td> '. $confirm['payment_owner'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Bank Name </td>
+                            <td> '. $confirm['bank_name'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Debit Number </td>
+                            <td> '. $confirm['no_rek'].'</td>
+                        </tr>
+                    </table>
+                </div>
+        
+                <div class="box-confirm">
+                    <p>Payment Confirm</p>
+                    <table>
+                        <tr>
+                            <td>Name </td>
+                            <td> '. $confirm['sender_name'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Bank Name </td>
+                            <td> '. $confirm['bank_sender'].'</td>
+                        </tr>
+                        <tr>
+                            <td>Debit Number </td>
+                            <td> '. $confirm['no_rek_sender'].'</td>
+                        </tr>
+                    </table>
+                </div>
+            <footer style="clear:both;margin-top:10px;text-align:center">
+                <hr>
+                <p>Thank you for choosing Us &copy; 2019</h5>
+            </footer>
+        </body>
+        </html>';
+        $mpdf->SetProtection(array('print'));
+        $mpdf->SetTitle("Acme Trading Co. - Invoice");
+        $mpdf->SetAuthor("Acme Trading Co.");
+        $mpdf->SetWatermarkText("Paid");
+        $mpdf->showWatermarkText = true;
+        $mpdf->watermark_font = 'DejaVuSansCondensed';
+        $mpdf->watermarkTextAlpha = 0.1;
+        $mpdf->SetDisplayMode('fullpage');
 
-    public function addPhoto()
-    {
-        //get id customer
-        $id_customer = $this->session->userdata('id_customer');
-
-        //get customer name
-        $name_customer = str_replace(' ','', $this->session->userdata('nama_customer'));
-    
-        #upload setting
-        $config['upload_path']          = './uploads/customer/';
-        $config['allowed_types']        = 'gif|jpg|png|jpeg';
-        $config['max_size']             = 2000;
-        $config['max_width']            = 3024;
-        $config['max_height']           = 3068;
-        $getName = $_FILES['photo_profile']['name'];
-        if(empty($getName)){
-            $fileName = 'no_img.jpg';
-        }else{
-            $fileName = $name_customer . '_' . $getName;
-        }
-        $config['file_name'] = $fileName;
-    
-        $this->load->library('upload', $config);
-        //enable overwirte
-        $this->upload->overwrite = true;
-
-        if (!$this->upload->do_upload('photo_profile')){
-            $error = array('error' => $this->upload->display_errors());
-            // var_dump($error);
-            // die();
-            redirect('manageAccountCus');
-    
-        }else{
-            $data1 = array('upload_data' => $this->upload->data());
-            $data= array(
-                'img_customer' => $fileName
-            );
-        }
-        $result = $this->Standard_model->updateData('tb_customer',$data,'id_customer',$id_customer);
-        if($result){
-            $this->session->set_flashdata('title','Photo Profile');
-            $this->session->set_flashdata('info','Added');
-            redirect('manageAccountCus');
-        }
-    }
-
-    public function editAccountCus()
-    {
-        //get id customer
-        $id_customer = $this->session->userdata('id_customer');
-
-        $this->form_validation->set_rules('nama_customer','Nama','required');
-        $this->form_validation->set_rules('telp_customer','Telp','required');
-        $this->form_validation->set_rules('email_customer','Email','required');
-        $this->form_validation->set_rules('alamat_customer','Alamat','required');
-
-
-        if($this->form_validation->run() === FALSE){
-        //$data customer
-        $data['customer'] = $this->Standard_model->getSingle('tb_customer','id_customer',$id_customer);
-        $this->load->view('customer/templates/header',$data);
-        $this->load->view('customer/editAccountCus',$data);
-        $this->load->view('customer/templates/footer');
-        }else{
-            $data = array(
-            'nama_customer' => $this->input->post('nama_customer'),
-            'telp_customer' => $this->input->post('telp_customer'),
-            'email_customer' => $this->input->post('email_customer'),
-            'alamat_customer' => $this->input->post('alamat_customer'),
-            );
-
-        $result = $this->Standard_model->updateData('tb_customer',$data,'id_customer',$id_customer);
-        if($result){
-            $this->session->set_flashdata('title','Account');
-            $this->session->set_flashdata('info','Update');
-            redirect('manageAccountCus');
-        }
-        }
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
     }
 
 }

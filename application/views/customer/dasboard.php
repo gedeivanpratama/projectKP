@@ -59,7 +59,7 @@
 								<?php endif; ?>
 								<a class="btn btn-primary" href="<?= base_url(); ?>myReservDetail/<?= $value['id_reservasi'] ?>/<?= $value['id_hotel'] ?>/<?= $value['id_type'] ?>/<?= $value['id_kamar'] ?>"><span class="fa fa-eye"> Detail</span></a>
 								<?php if($value['id_status_reservasi'] != 4): ?>
-								<a class="btn btn-danger" href="<?= base_url(); ?>cancelMyReserv/<?= $value['data_api'] ?>/<?= $value['id_reservasi'] ?>"><span class="fa fa-minus-square"> Cancel</span></a>
+								<a class="btn btn-danger" href="<?= base_url(); ?>cancelMyReserv/<?= $value['id_reservasi'] ?>"><span class="fa fa-minus-square"> Cancel</span></a>
 								<?php endif; ?>
 								<?php if($value['id_status_reservasi'] == 4): ?>
 								<a class="btn btn-danger" href="<?= base_url(); ?>deleteMyReserv/<?= $value['id_reservasi'] ?>"><span class="fa fa-times"> Delete</span></a>

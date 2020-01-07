@@ -10,6 +10,15 @@ class Web extends CI_Controller{
         $this->load->model(array('Standard_model','Seller_model','Web_model','Api_Model', 'Cront_Model'));
     }
     
+    public function userid()
+    {
+        if($this->session->get_userdata('id_customer') !== null){
+            return $this->session->userdata('id_customer');
+        }
+
+        return $this->session->userdata('id_seller');
+    }
+
     public function index()
     {
         $this->form_validation->set_rules('search','Search','required');
@@ -20,14 +29,12 @@ class Web extends CI_Controller{
         $data['keyword'] = $address;
         $data['search'] = $this->Web_model->search($address);
         
-        
         if($this->form_validation->run() === FALSE){
             $this->load->view('web/front_page',$data);
             
         }else{
             $check_in = $this->input->post('check_in');
             $check_out = $this->input->post('check_out');
-            
             
             if(strtotime($check_in) < strtotime($today) || strtotime($check_out) <= strtotime($today) ){
                 $this->session->set_flashdata('title','Search Hotel');
@@ -156,7 +163,7 @@ class Web extends CI_Controller{
                 'check_in' => $this->input->post('check_in'),
                 'check_out' => $this->input->post('check_out'),
                 'total_price' => $this->input->post('total_price'),
-                'id_customer' => $id_customer,
+                'id_user' => $this->userid(),
                 'id_hotel' => $this->input->post('id_hotel'),
                 'id_status_reservasi' => 1,
                 'id_type' => $this->input->post('id_type'),

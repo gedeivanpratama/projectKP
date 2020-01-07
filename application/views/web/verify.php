@@ -186,7 +186,7 @@
 		<input type="hidden" name="id_event" value="<?= $id_event?>">
 
 
-		<?php if(empty($this->session->userdata('nama_customer'))):?>
+		<?php if(empty($this->session->userdata('id_customer'))):?>
 		<label class="label label-warning my-verify-label">Need <a href="<?= base_url() ?>loginCustomer/<?= $hotel['id_hotel'] ?>/<?= $type['id_type']; ?>/<?= $_GET['room'] ?>">login</a>
 			to Booking</label>
 		<button type="submit" class="btn btn-success my-center" disabled>Continue To Payment</button>

@@ -28,7 +28,7 @@
                 </div>
           </div>
         <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Add Fasilitas Hotel</button>
+        <button type="submit" class="btn btn-primary">Edit Fasilitas Hotel</button>
 
         </div>
         <?php echo form_close(); ?>

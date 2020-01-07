@@ -21,10 +21,6 @@
                     </span>
 					<input type="text" class="form-control" name="alamat_hotel" placeholder="Alamat Hotel">
 				</div>
-				<div class="form-group">
-					<label for="inputAddress">Url</label>
-					<input type="text" class="form-control" name="url" placeholder="Url">
-				</div>
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="inputEmail4">Email</label>

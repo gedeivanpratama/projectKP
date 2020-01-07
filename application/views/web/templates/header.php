@@ -29,7 +29,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-        <?php if(!empty($this->session->userdata('id_customer')) && !empty($this->session->userdata('nama_customer'))): ?>
+        <?php if(!empty($this->session->userdata('id_customer')) && $this->session->userdata('id_rolle') === '2'): ?>
             <ul class="navbar-nav mt-2">
                 <li class="nav-item">
                     <a class="nav-link" href="<?= base_url() ?>manageAccountCus">My Profile</a>
@@ -39,7 +39,7 @@
                 </li>
             </ul>
             <?php endif; ?>
-            <?php if(!empty($this->session->userdata('id_customer')) && !empty($this->session->userdata('nama_customer'))): ?>
+            <?php if(!empty($this->session->userdata('id_customer')) && $this->session->userdata('nama_customer') === '2'): ?>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="<?=base_url() ?>logoutCustomer">Logout</a>

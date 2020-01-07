@@ -30,31 +30,17 @@
   <div class="login-box-body my-registerBox">
     <p class="login-box-msg">Register Seller</p>
     <?php echo form_open(); ?>
-    <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <span class="text-danger"><?php echo form_error('nama_user'); ?></span>
-                    <input type="text" class="form-control" name="nama_user" placeholder="Name">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <span class="text-danger"><?php echo form_error('email_user'); ?></span>
-                    <input type="email" class="form-control" name="email_user" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">telp</label>
-                    <span class="text-danger"><?php echo form_error('telp_user'); ?></span>
-                    <input type="number" class="form-control" name="telp_user" placeholder="Telp">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Alamat</label>
-                    <span class="text-danger"><?php echo form_error('alamat_user'); ?></span>
-                    <input type="text" class="form-control" name="alamat_user" placeholder="Alamat">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <span class="text-danger"><?php echo form_error('password'); ?></span>
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <span class="text-danger"><?php echo form_error('email_user'); ?></span>
+            <input type="email" class="form-control" name="email_user" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <span class="text-danger"><?php echo form_error('password'); ?></span>
+            <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+        <input type="hidden" name="id_rolle" value="1">
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">

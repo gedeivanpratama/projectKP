@@ -14,7 +14,6 @@
 						<tr>
 							<th>Id</th>
 							<th>room No</th>
-							<th>Status</th>
 							<th>Action</th>
 						</tr>
 						<?php foreach($room as $key => $val): ?>
@@ -24,9 +23,6 @@
 							</td>
 							<td>
 								<?= $val['no_kamar']; ?>
-							</td>
-							<td>
-								<?= $val['nama_status']; ?>
 							</td>
 							<td>
 								<a href="<?= base_url(); ?>editRoom/<?php echo $val['id_kamar'] ?>/<?= $val['id_status']; ?>/<?= $type['id_type'] ?>"
